@@ -1,55 +1,43 @@
-import * as React from "react";
-import { AnimatePresence } from 'framer-motion'
-import { StyleSheet, Pressable } from 'react-native'
-import { View } from 'moti'
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 
-function Shape({ bg }) {
+import HomeScreen from "./screens/HomeScreen";
+import CardsAppearanceScreen from "./screens/CardsAppearanceScreen";
+import LandingScreen from "./screens/LandingScreen";
+import EmojiReactionScreen from "./screens/EmojiReactionScreen";
+import HeartScreen from "./screens/HeartScreen";
+import ChartScreen from "./screens/ChartScreen";
+import CallCardScreen from "./screens/CallCardScreen";
+
+const Stack = createStackNavigator();
+
+function MainStack() {
   return (
-    <View
-      from={{
-        opacity: 0,
-        scale: 0.5,
+    <Stack.Navigator
+      screenOptions={{
+        headerShown: false,
       }}
-      animate={{
-        opacity: 1,
-        scale: 1,
-      }}
-      exit={{
-        opacity: 0,
-        scale: 0.9,
-      }}
-      style={[styles.shape, { backgroundColor: bg }]}
-    />
-  )
+    >
+      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="CardsAppearance" component={CardsAppearanceScreen} />
+      <Stack.Screen name="Landing" component={LandingScreen} />
+      <Stack.Screen name="EmojiReaction" component={EmojiReactionScreen} />
+      <Stack.Screen name="Heart" component={HeartScreen} />
+      <Stack.Screen name="Chart" component={ChartScreen} />
+      <Stack.Screen name="CallCard" component={CallCardScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function Routes() {
+  return <MainStack />;
 }
 
 export default function App() {
-  const [visible, toggle] = React.useReducer((s) => !s, true)
-
   return (
-    <Pressable onPress={toggle} style={styles.container}>
-      <AnimatePresence exitBeforeEnter>
-        {visible && <Shape bg="hotpink" key="hotpink" />}
-        {!visible && <Shape bg="cyan" key="cyan" />}
-      </AnimatePresence>
-    </Pressable>
-  )
+    <NavigationContainer>
+      <Routes />
+    </NavigationContainer>
+  );
 }
-
-const styles = StyleSheet.create({
-  shape: {
-    justifyContent: 'center',
-    height: 250,
-    width: 250,
-    borderRadius: 25,
-    marginRight: 10,
-    backgroundColor: 'white',
-  },
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    flexDirection: 'row',
-    backgroundColor: '#9c1aff',
-  },
-})
